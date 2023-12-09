@@ -15,17 +15,24 @@ class LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mousehunt'),
+        centerTitle: true,
+      ),
       body: Center(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Colors.purple[100]!, Colors.purple[200]!],
+              colors: [
+                Color.fromARGB(255, 232, 231, 235),
+                Color.fromARGB(255, 234, 233, 238),
+              ],
             ),
           ),
           child: SizedBox(
-            width: 500,
+            width: 350,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -48,11 +55,12 @@ class LoginFormState extends State<LoginForm> {
                       String password = '';
                       if (emailController.text.isNotEmpty) {
                         email = emailController.text;
-                        if(passwordController.text.isNotEmpty) {
+                        if (passwordController.text.isNotEmpty) {
                           password = passwordController.text;
                           print('Email: $email, Password: $password');
                         } else {
-                          Utils().mySnackBar(context, 'Please enter your password!');
+                          Utils().mySnackBar(
+                              context, 'Please enter your password!');
                         }
                       } else {
                         Utils().mySnackBar(context, 'Please enter your email!');

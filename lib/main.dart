@@ -13,8 +13,9 @@ class MouseApp extends StatelessWidget {
     return MaterialApp(
       title: 'MouseHunt',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        scaffoldBackgroundColor: Colors.deepPurple,
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 4, 2, 78)),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 25, 1, 66),
         useMaterial3: true,
       ),
       home: const LoginForm(),
