@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mousehunt/dashboard_screen.dart';
 import 'package:mousehunt/utils/utils.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  LoginFormState createState() => LoginFormState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class LoginFormState extends State<LoginForm> {
+class LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -16,7 +18,15 @@ class LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mousehunt'),
+        backgroundColor: Colors.deepPurple.withOpacity(0.2),
+        title: const Text(
+          'Mousehunt',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 8,
+          ),
+        ),
         centerTitle: true,
       ),
       body: Center(
@@ -58,6 +68,7 @@ class LoginFormState extends State<LoginForm> {
                         if (passwordController.text.isNotEmpty) {
                           password = passwordController.text;
                           print('Email: $email, Password: $password');
+                          _login();
                         } else {
                           Utils().mySnackBar(
                               context, 'Please enter your password!');
@@ -84,4 +95,30 @@ class LoginFormState extends State<LoginForm> {
     passwordController.dispose();
     super.dispose();
   }
+
+  Future<void> _login() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // If login is successful, you can navigate to the next screen or perform any other actions.
+      print("Successfully logged in: ${userCredential.user?.uid}");
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => DashboardScreen(),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided.');
+      } else {
+        print('Error: ${e.message}');
+      }
+    }
+  }
+
 }
